@@ -4,75 +4,281 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Quiz de Ciências</title>
+
 <style>
-body{font-family:Arial,sans-serif;max-width:800px;margin:auto;padding:20px;background:#f4f6f9}
-.card{background:white;padding:20px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-h1{text-align:center}
-button{padding:10px 20px;font-size:16px;cursor:pointer}
-#opcoes label{display:block;margin:10px 0}
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f4f4;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:800px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.2);
+}
+
+h1{
+    text-align:center;
+    color:#2c3e50;
+}
+
+#pergunta{
+    font-size:22px;
+    margin-bottom:20px;
+}
+
+.alternativa{
+    display:block;
+    width:100%;
+    margin:10px 0;
+    padding:12px;
+    font-size:16px;
+    cursor:pointer;
+    border:1px solid #ccc;
+    border-radius:6px;
+    background:#fafafa;
+}
+
+.alternativa:hover{
+    background:#e8f4ff;
+}
+
+#feedback{
+    margin-top:15px;
+    font-weight:bold;
+    font-size:18px;
+}
+
+#proximo{
+    margin-top:20px;
+    padding:10px 20px;
+    display:none;
+    cursor:pointer;
+}
+
+#placar{
+    margin-bottom:20px;
+    font-weight:bold;
+}
+
+.resultado{
+    text-align:center;
+}
 </style>
 </head>
 <body>
+
+<div class="container">
+
 <h1>Quiz de Ciências</h1>
-<div class="card">
-<div id="quiz"></div>
+
+<div id="placar">
+Pergunta <span id="numero">1</span>/10 |
+Acertos: <span id="acertos">0</span>
+</div>
+
+<div id="quiz">
+<div id="pergunta"></div>
+<div id="alternativas"></div>
+<div id="feedback"></div>
+<button id="proximo">Próxima Pergunta</button>
+</div>
+
 </div>
 
 <script>
-const perguntas=[
-{p:"Qual é o planeta conhecido como Planeta Vermelho?",o:["Vênus","Júpiter","Saturno","Marte"],c:3},
-{p:"Qual gás é mais abundante na atmosfera terrestre?",o:["Oxigênio","Nitrogênio","Hidrogênio","CO2"],c:1},
-{p:"Qual órgão bombeia o sangue?",o:["Pulmão","Rim","Coração","Fígado"],c:2},
-{p:"As plantas produzem qual gás na fotossíntese?",o:["Oxigênio","Nitrogênio","Metano","Hélio"],c:0},
-{p:"Qual é a unidade de força?",o:["Metro","Litro","Newton","Quilo"],c:2},
-{p:"A água ferve aproximadamente a qual temperatura ao nível do mar?",o:["50°C","100°C","150°C","200°C"],c:1},
-{p:"Qual estrela está no centro do Sistema Solar?",o:["Lua","Sírius","Sol","Marte"],c:2},
-{p:"Qual é o maior órgão do corpo humano?",o:["Coração","Pele","Fígado","Pulmão"],c:1},
-{p:"Qual processo transforma água líquida em vapor?",o:["Condensação","Fusão","Evaporação","Solidificação"],c:2},
-{p:"Qual é o satélite natural da Terra?",o:["Marte","Lua","Sol","Vênus"],c:1}
+
+const perguntas = [
+
+{
+pergunta:"Qual é o planeta conhecido como Planeta Vermelho?",
+alternativas:["Terra","Marte","Júpiter","Saturno"],
+correta:1
+},
+{
+pergunta:"Qual gás é essencial para a respiração humana?",
+alternativas:["Nitrogênio","Oxigênio","Hidrogênio","Hélio"],
+correta:1
+},
+{
+pergunta:"Qual órgão bombeia sangue para todo o corpo?",
+alternativas:["Pulmão","Fígado","Coração","Rim"],
+correta:2
+},
+{
+pergunta:"A água ferve a aproximadamente:",
+alternativas:["50°C","75°C","100°C","150°C"],
+correta:2
+},
+{
+pergunta:"Qual é o maior planeta do Sistema Solar?",
+alternativas:["Terra","Marte","Júpiter","Urano"],
+correta:2
+},
+{
+pergunta:"Qual é a estrela do Sistema Solar?",
+alternativas:["Lua","Sol","Marte","Vênus"],
+correta:1
+},
+{
+pergunta:"As plantas produzem alimento por meio da:",
+alternativas:["Respiração","Digestão","Fotossíntese","Evaporação"],
+correta:2
+},
+{
+pergunta:"Qual é o satélite natural da Terra?",
+alternativas:["Lua","Sol","Marte","Júpiter"],
+correta:0
+},
+{
+pergunta:"Qual estado físico possui forma e volume definidos?",
+alternativas:["Gasoso","Líquido","Plasma","Sólido"],
+correta:3
+},
+{
+pergunta:"Qual camada da Terra é a mais externa?",
+alternativas:["Núcleo","Manto","Crosta","Magma"],
+correta:2
+},
+{
+pergunta:"Qual animal é um mamífero?",
+alternativas:["Galinha","Sapo","Baleia","Tartaruga"],
+correta:2
+},
+{
+pergunta:"Qual vitamina é produzida pela exposição ao Sol?",
+alternativas:["A","B","C","D"],
+correta:3
+},
+{
+pergunta:"Qual órgão é responsável pela respiração?",
+alternativas:["Pulmão","Coração","Fígado","Estômago"],
+correta:0
+},
+{
+pergunta:"A força que nos mantém presos ao solo chama-se:",
+alternativas:["Magnetismo","Gravidade","Atrito","Pressão"],
+correta:1
+},
+{
+pergunta:"Qual destes é um vertebrado?",
+alternativas:["Minhoca","Água-viva","Aranha","Peixe"],
+correta:3
+},
+{
+pergunta:"Qual planeta é conhecido pelos anéis?",
+alternativas:["Saturno","Mercúrio","Marte","Vênus"],
+correta:0
+},
+{
+pergunta:"O sangue circula através de:",
+alternativas:["Ossos","Vasos sanguíneos","Músculos","Pele"],
+correta:1
+},
+{
+pergunta:"Qual é a principal fonte de energia da Terra?",
+alternativas:["Lua","Vento","Sol","Marte"],
+correta:2
+},
+{
+pergunta:"Qual destes é um ser vivo?",
+alternativas:["Pedra","Água","Árvore","Areia"],
+correta:2
+},
+{
+pergunta:"O processo de passagem da água líquida para vapor chama-se:",
+alternativas:["Condensação","Evaporação","Solidificação","Fusão"],
+correta:1
+}
+
 ];
 
-perguntas.sort(()=>Math.random()-0.5);
+let sorteadas = [];
+let indice = 0;
+let acertos = 0;
 
-let atual=0, acertos=0;
-let respostas=[];
-
-function mostrar(){
- const q=perguntas[atual];
- document.getElementById('quiz').innerHTML=`
- <h3>Pergunta ${atual+1} de ${perguntas.length}</h3>
- <p><strong>${q.p}</strong></p>
- <div id="opcoes">
- ${q.o.map((op,i)=>`<label><input type="radio" name="resp" value="${i}"> ${op}</label>`).join('')}
- </div>
- <button onclick="proxima()">Próxima</button>`;
+function embaralhar(array){
+    return array.sort(() => Math.random() - 0.5);
 }
 
-function proxima(){
- const marc=document.querySelector('input[name="resp"]:checked');
- if(!marc){alert('Selecione uma alternativa.');return;}
- const valor=parseInt(marc.value);
- respostas.push({q:perguntas[atual],r:valor});
- if(valor===perguntas[atual].c) acertos++;
- atual++;
- if(atual<perguntas.length) mostrar();
- else finalizar();
+sorteadas = embaralhar([...perguntas]).slice(0,10);
+
+function carregarPergunta(){
+
+    document.getElementById("numero").textContent = indice + 1;
+
+    let p = sorteadas[indice];
+
+    document.getElementById("pergunta").textContent = p.pergunta;
+
+    let html = "";
+
+    p.alternativas.forEach((alt,i)=>{
+        html += `<button class="alternativa" onclick="responder(${i})">${alt}</button>`;
+    });
+
+    document.getElementById("alternativas").innerHTML = html;
+    document.getElementById("feedback").innerHTML = "";
+    document.getElementById("proximo").style.display = "none";
 }
+
+function responder(opcao){
+
+    let p = sorteadas[indice];
+
+    let botoes = document.querySelectorAll(".alternativa");
+    botoes.forEach(btn => btn.disabled = true);
+
+    if(opcao === p.correta){
+        acertos++;
+        document.getElementById("feedback").innerHTML =
+        "✅ Correto!";
+    }else{
+        document.getElementById("feedback").innerHTML =
+        "❌ Errado! Resposta correta: <b>" +
+        p.alternativas[p.correta] +
+        "</b>";
+    }
+
+    document.getElementById("acertos").textContent = acertos;
+    document.getElementById("proximo").style.display = "inline-block";
+}
+
+document.getElementById("proximo").addEventListener("click",()=>{
+
+    indice++;
+
+    if(indice < 10){
+        carregarPergunta();
+    }else{
+        finalizar();
+    }
+});
 
 function finalizar(){
- let html=`<h2>Resultado Final</h2>
- <p><strong>Acertos:</strong> ${acertos} de ${perguntas.length} (${Math.round(acertos/perguntas.length*100)}%)</p>`;
- respostas.forEach((item,i)=>{
-   const ok=item.r===item.q.c;
-   html+=`<p>${ok?'✅':'❌'} ${i+1}. ${item.q.p}<br>`;
-   if(!ok) html+=`Resposta correta: <strong>${item.q.o[item.q.c]}</strong>`;
-   html+='</p>';
- });
- html+='<button onclick="location.reload()">Refazer Quiz</button>';
- document.getElementById('quiz').innerHTML=html;
+
+    let percentual = Math.round((acertos/10)*100);
+
+    document.getElementById("quiz").innerHTML = `
+    <div class="resultado">
+        <h2>Quiz Finalizado!</h2>
+        <h3>Acertos: ${acertos} de 10</h3>
+        <h3>Aproveitamento: ${percentual}%</h3>
+        <button onclick="location.reload()">
+            Jogar Novamente
+        </button>
+    </div>
+    `;
 }
 
-mostrar();
+carregarPergunta();
+
 </script>
+
 </body>
 </html>
