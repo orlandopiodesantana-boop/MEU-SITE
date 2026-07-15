@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz de Ciências</title>
+<style>
+body{font-family:Arial,sans-serif;max-width:800px;margin:auto;padding:20px;background:#f4f6f9}
+.card{background:white;padding:20px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+h1{text-align:center}
+button{padding:10px 20px;font-size:16px;cursor:pointer}
+#opcoes label{display:block;margin:10px 0}
+</style>
+</head>
+<body>
+<h1>Quiz de Ciências</h1>
+<div class="card">
+<div id="quiz"></div>
+</div>
+
+<script>
+const perguntas=[
+{p:"Qual é o planeta conhecido como Planeta Vermelho?",o:["Vênus","Júpiter","Saturno","Marte"],c:3},
+{p:"Qual gás é mais abundante na atmosfera terrestre?",o:["Oxigênio","Nitrogênio","Hidrogênio","CO2"],c:1},
+{p:"Qual órgão bombeia o sangue?",o:["Pulmão","Rim","Coração","Fígado"],c:2},
+{p:"As plantas produzem qual gás na fotossíntese?",o:["Oxigênio","Nitrogênio","Metano","Hélio"],c:0},
+{p:"Qual é a unidade de força?",o:["Metro","Litro","Newton","Quilo"],c:2},
+{p:"A água ferve aproximadamente a qual temperatura ao nível do mar?",o:["50°C","100°C","150°C","200°C"],c:1},
+{p:"Qual estrela está no centro do Sistema Solar?",o:["Lua","Sírius","Sol","Marte"],c:2},
+{p:"Qual é o maior órgão do corpo humano?",o:["Coração","Pele","Fígado","Pulmão"],c:1},
+{p:"Qual processo transforma água líquida em vapor?",o:["Condensação","Fusão","Evaporação","Solidificação"],c:2},
+{p:"Qual é o satélite natural da Terra?",o:["Marte","Lua","Sol","Vênus"],c:1}
+];
+
+perguntas.sort(()=>Math.random()-0.5);
+
+let atual=0, acertos=0;
+let respostas=[];
+
+function mostrar(){
+ const q=perguntas[atual];
+ document.getElementById('quiz').innerHTML=`
+ <h3>Pergunta ${atual+1} de ${perguntas.length}</h3>
+ <p><strong>${q.p}</strong></p>
+ <div id="opcoes">
+ ${q.o.map((op,i)=>`<label><input type="radio" name="resp" value="${i}"> ${op}</label>`).join('')}
+ </div>
+ <button onclick="proxima()">Próxima</button>`;
+}
+
+function proxima(){
+ const marc=document.querySelector('input[name="resp"]:checked');
+ if(!marc){alert('Selecione uma alternativa.');return;}
+ const valor=parseInt(marc.value);
+ respostas.push({q:perguntas[atual],r:valor});
+ if(valor===perguntas[atual].c) acertos++;
+ atual++;
+ if(atual<perguntas.length) mostrar();
+ else finalizar();
+}
+
+function finalizar(){
+ let html=`<h2>Resultado Final</h2>
+ <p><strong>Acertos:</strong> ${acertos} de ${perguntas.length} (${Math.round(acertos/perguntas.length*100)}%)</p>`;
+ respostas.forEach((item,i)=>{
+   const ok=item.r===item.q.c;
+   html+=`<p>${ok?'✅':'❌'} ${i+1}. ${item.q.p}<br>`;
+   if(!ok) html+=`Resposta correta: <strong>${item.q.o[item.q.c]}</strong>`;
+   html+='</p>';
+ });
+ html+='<button onclick="location.reload()">Refazer Quiz</button>';
+ document.getElementById('quiz').innerHTML=html;
+}
+
+mostrar();
+</script>
+</body>
+</html>
